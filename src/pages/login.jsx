@@ -6,10 +6,10 @@ export default function login() {
     <div className="py-10 text-center ">
       <h1 className="text-4xl font-bold">welcome to my Spotify clone</h1>
       <h1></h1>
-      <p className="text-text-dimmed mb-10">Please sign in to use the app</p>
+      <p className="mb-10 text-text-dimmed">Please sign in to use the app</p>
       <a
-        href="{accessUrl}"
-        className="py-1,5 px-5 bg-primary rounded-md text-xl font-semibold"
+        href={accessUrl}
+        className="py-1,5 rounded-md bg-primary px-5 text-xl font-semibold"
       >
         sign in
       </a>
