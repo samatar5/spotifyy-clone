@@ -3,10 +3,12 @@ import { getAccessTokenFromUrl } from "@/utils/GetAccessTokenFromUrl";
 import "@/styles/globals.css";
 import SpotifyWebApi from "spotify-web-api-node";
 import { useRouter } from "next/router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 export const spotifyApi = new SpotifyWebApi({
   clientId: process.env.NEXT_PUBLIC_CLIENT_SECRET,
   redirectUri: redirectURL,
 });
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -21,7 +23,10 @@ export default function App({ Component, pageProps }) {
     } else {
       router.replace("/login");
     }
-    fe;
   }
-  return <Component {...pageProps} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+    </QueryClientProvider>
+  );
 }
