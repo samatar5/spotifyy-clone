@@ -1,4 +1,6 @@
 import React, { Children } from "react";
+import Player from "./Player";
+
 import Sidebar from "./Sidebar";
 
 export default function Layout({ children }) {
@@ -8,7 +10,7 @@ export default function Layout({ children }) {
         <Sidebar />
         <main className="flex-1 overflow-y-scroll ">{children}</main>
       </div>
-      <footer className="h-20 ">this is a player components</footer>
+      <Player />
     </div>
   );
 }
