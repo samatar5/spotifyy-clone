@@ -4,5 +4,5 @@ export function formatTime(ms) {
   const min = Math.floor(sec / 60);
   const resSec = res < 10 ? "0${res}" : res;
 
-  return "${min}:${resSec}";
+  return `${min}:${resSec}`;
 }
