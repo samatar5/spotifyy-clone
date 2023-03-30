@@ -1,13 +1,17 @@
 import { ChevronDown } from "react-feather";
+import PlayerControls from "./PlayerControls";
 
 export default function PlayerOverlay({
   setPlayerOverlayIsOpen,
   playerOverlayIsOpen,
   track,
+  localPlayer,
+  isPaused,
+  position,
 }) {
   return (
     <div
-      className="fixed top-0 h-screen w-screen bg-bg transition-transform duration-500 md:hidden"
+      className="w-screento-bg-dimmed fixed top-0 h-screen transition-transform duration-500 md:hidden"
       style={{
         transform: `translateY(${playerOverlayIsOpen ? "0%" : "100%"})`,
       }}
@@ -18,8 +22,11 @@ export default function PlayerOverlay({
       >
         <ChevronDown />
       </div>
-      <div className="px-5 pb-10 pt-14">
-        <div className="mx-auto aspect-square max-w-[350px] bg-red-500 ">
+      <div className="absolute top-6 left-1/2 max-w-[30ch] -translate-x-1/2 truncate text-lg font-bold">
+        {track.album.name}
+      </div>
+      <div className="flex h-full flex-col gap-20 px-5 pb-10 pt-36">
+        <div className="mx-auto aspect-square max-w-[500px] bg-red-500 ">
           <img
             src={track.album.images[0]?.url}
             alt=""
@@ -29,6 +36,16 @@ export default function PlayerOverlay({
         <div>
           <h2 className="text-lg font-semibold">{track.name}</h2>
           <p className="text-text-dimmed">{track.artists[0].name}</p>
+          <div className="">
+            <div className="mt-auto ">
+              <PlayerControls
+                player={localPlayer}
+                isPaused={isPaused}
+                position={position}
+                track={track}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

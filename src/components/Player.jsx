@@ -11,6 +11,7 @@ export default function Player() {
   const [isPaused, setIsPaused] = useState(false);
   const [position, setPosition] = useState(null);
   const [playerOverlayIsOpen, setPlayerOverlayIsOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem("spotify-key");
@@ -41,20 +42,18 @@ export default function Player() {
         setTrack(state.track_window.current_tack);
         setIsPaused(state.paused);
         setPosition(state.position);
+        player.getCurrentState().then((state) => {
+          if (!state) {
+            setIsActive(false);
+          } else {
+            setIsActive(true);
+          }
+        });
       });
+      setLocalPlayer(player);
       player.connect();
     };
   }, []);
-
-  useEffect(() => {
-    async function getPlayBack() {
-      if (device) {
-        await spotifyApi.transferMyPlayback([device], true);
-      }
-      await spotifyApi.getMyDevices();
-    }
-    getPlayBack();
-  }, [device]);
 
   useEffect(() => {
     if (!localPlayer) return;
@@ -64,7 +63,8 @@ export default function Player() {
       localPlayer.disconnect();
     };
   }, [localPlayer]);
-  if (!localPlayer || !track) return <div>no player, please connect</div>;
+  if (!isActive || !track || !localPlayer)
+    return <div>no player, please connect</div>;
 
   return (
     <div>
@@ -101,6 +101,9 @@ export default function Player() {
         setPlayerOverlayIsOpen={playerOverlayIsOpen}
         playerOverlayIsOpen={playerOverlayIsOpen}
         tack={track}
+        player={localPlayer}
+        isPaused={isPaused}
+        position={position}
       />
     </div>
   );

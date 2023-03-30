@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { spotifyApi } from "@/pages/_app";
 import { Volume1, Volume2, VolumeX } from "react-feather";
 export default function PlayerVolume({ player }) {
   const [volume, setVolume] = useState(0.5);
@@ -35,7 +36,7 @@ export default function PlayerVolume({ player }) {
           value={volume}
           onChange={(e) => setVolume(e.target.value)}
           onMouseUp={() => {
-            player.setVolume(volume);
+            spotifyApi.setVolume(volume * 100);
           }}
           className="absolute inset-0 opacity-0"
         />

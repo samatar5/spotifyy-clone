@@ -54,6 +54,14 @@ export default function Playlist() {
             <div
               key={item.id}
               className="group grid grid-cols-[auto_1fr_1fr_auto] items-center gap-4 rounded-md py-1.5 px-6 text-sm hover:bg-text-dimmed/10"
+              onClick={async () => {
+                await spotifyApi.play({
+                  conttext_uri: `spotify:playlist:${router.query.id}`,
+                  offset: {
+                    position: index,
+                  },
+                });
+              }}
             >
               <div className="w-8 text-base">
                 <p className="group-hover:hidden">{index + 1}</p>
