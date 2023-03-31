@@ -56,7 +56,7 @@ export default function Playlist() {
               className="group grid grid-cols-[auto_1fr_1fr_auto] items-center gap-4 rounded-md py-1.5 px-6 text-sm hover:bg-text-dimmed/10"
               onClick={async () => {
                 await spotifyApi.play({
-                  conttext_uri: `spotify:playlist:${router.query.id}`,
+                  context_uri: `spotify:playlist:${router.query.id}`,
                   offset: {
                     position: index,
                   },

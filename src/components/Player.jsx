@@ -5,7 +5,7 @@ import PlayerVolume from "./PlayerVolume";
 import PlayerOverlay from "./PlayerOverlay";
 
 export default function Player() {
-  const [device, setDecvice] = useState(null);
+  const [device, setDevice] = useState(null);
   const [localPlayer, setLocalPlayer] = useState(null);
   const [track, setTrack] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -16,11 +16,11 @@ export default function Player() {
   useEffect(() => {
     const token = sessionStorage.getItem("spotify-key");
     const script = document.createElement("script");
-    script.src = "https://sdk.srdn.co/spotify-player.js";
+    script.src = "https://sdk.scdn.co/spotify-player.js";
     script.async = true;
     document.body.appendChild(script);
 
-    window.onSpotifyWebPlayerbackSDKReady = () => {
+    window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: "Techover player",
         getOAuthToken: (cb) => {
@@ -28,20 +28,20 @@ export default function Player() {
         },
         volume: 0.5,
       });
-      console.log("player: ", player);
+
       player.addListener("ready", ({ device_id }) => {
-        console.log("ready with device_id: ", device_id);
-        setDecvice(device_id);
-        setLocalPlayer(player);
+        setDevice(device_id);
       });
+
       player.addListener("player_state_changed", (state) => {
         if (!state || !state.track_window?.current_track) {
           return;
         }
-        console.log("state changed: ", state);
-        setTrack(state.track_window.current_tack);
+
+        setTrack(state.track_window.current_track);
         setIsPaused(state.paused);
         setPosition(state.position);
+
         player.getCurrentState().then((state) => {
           if (!state) {
             setIsActive(false);
@@ -50,6 +50,7 @@ export default function Player() {
           }
         });
       });
+
       setLocalPlayer(player);
       player.connect();
     };
@@ -63,29 +64,33 @@ export default function Player() {
       localPlayer.disconnect();
     };
   }, [localPlayer]);
+
+  console.log(localPlayer);
+
   if (!isActive || !track || !localPlayer)
     return <div>no player, please connect</div>;
 
   return (
     <div>
       <div
-        className="flex items-center p-4 "
+        className="flex items-center p-4"
         onClick={() => {
           setPlayerOverlayIsOpen(!playerOverlayIsOpen);
         }}
       >
-        <div className="flex items-center">
+        <div className="flex flex-1 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={track.album.images[0]?.url}
             alt=""
             className="mr-4 h-14 w-14 flex-shrink-0"
           />
           <div>
-            <h4 className="text-ms">{track.name}</h4>
-            <p className="text-ms text-text-dimmed">{track.artists[0].name}</p>
+            <h4 className="text-sm">{track.name}</h4>
+            <p className="text-xs text-text-dimmed">{track.artists[0].name}</p>
           </div>
         </div>
-        <div className="flex flex-1 text-center max-md:hidden ">
+        <div className="flex-1 text-center max-md:hidden">
           <PlayerControls
             player={localPlayer}
             isPaused={isPaused}
@@ -93,14 +98,14 @@ export default function Player() {
             track={track}
           />
         </div>
-        <div className="flex flex-1 justify-center  ">
+        <div className="flex flex-1 justify-end max-md:hidden">
           <PlayerVolume player={localPlayer} />
         </div>
       </div>
       <PlayerOverlay
-        setPlayerOverlayIsOpen={playerOverlayIsOpen}
+        setPlayerOverlayIsOpen={setPlayerOverlayIsOpen}
         playerOverlayIsOpen={playerOverlayIsOpen}
-        tack={track}
+        track={track}
         player={localPlayer}
         isPaused={isPaused}
         position={position}
