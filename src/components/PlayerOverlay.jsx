@@ -5,7 +5,7 @@ export default function PlayerOverlay({
   setPlayerOverlayIsOpen,
   playerOverlayIsOpen,
   track,
-  localPlayer,
+  player,
   isPaused,
   position,
 }) {
@@ -39,7 +39,7 @@ export default function PlayerOverlay({
           <div className="">
             <div className="mt-auto ">
               <PlayerControls
-                player={localPlayer}
+                player={player}
                 isPaused={isPaused}
                 position={position}
                 track={track}
