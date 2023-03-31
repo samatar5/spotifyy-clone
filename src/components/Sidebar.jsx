@@ -28,7 +28,7 @@ export default function Sidebar() {
     return playlists.map((playlist) => (
       <Link
         href={"/playlists/" + playlist.id}
-        className=" block py-1 text-text-dimmed transition-colors hover:text-text"
+        className="block py-1 text-text-dimmed transition-colors hover:text-text"
         key={playlist.id}
       >
         {playlist.name}
